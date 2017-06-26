@@ -34,6 +34,18 @@ int main()
 
   PID pid;
   // TODO: Initialize the pid variable.
+  // The PID parameters were chosen using manual tuning. The influcence
+  // of each parameter on the behavior was understood from a video on
+  // youtube (https://www.youtube.com/watch?v=4Y7zG48uHRo)
+  // Following steps were used:
+  // 1. Since steering angle and CTE are of order of 1.0, quarter (0.25)
+  //    value was used as a starting point for Kp.
+  // 2. Gradually Kd was reduced to remove oscillations - a twiddle type
+  //    of manual tuning was used, where the order of mangnitude was reduced
+  //    upon each iteration for Kd.
+  // 3. Finally, Ki was tuned.
+  // The behavior of the vehicle was found to be most sensitive to Kd,
+  // then Kp, and finally hardly sensitive to Ki.
   pid.Init(0.287, 0.00072, 5.675);
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
